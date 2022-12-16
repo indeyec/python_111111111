@@ -1,6 +1,8 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import User
+from django.forms import BaseInlineFormSet
+
+from .models import User, Choice
 from .models import user_registrated
 
 
@@ -44,3 +46,10 @@ class ChangeUserInfoForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ('name', 'surname', 'username', 'email', 'avatar')
+
+
+class RequiredInlineFormSet(BaseInlineFormSet):
+    def _construct_form(self, i, **kwargs):
+        form = super(RequiredInlineFormSet, self)._construct_form(1, **kwargs)
+        form.empty_permitted = False
+        return form

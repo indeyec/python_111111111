@@ -20,6 +20,7 @@ class Question(models.Model):
     img = models.ImageField(max_length=200, verbose_name='Картинка', upload_to=get_name_file, blank=True, null=True,
                             validators=[FileExtensionValidator(allowed_extensions=['png', 'jpg', 'jpeg'])])
 
+
     def was_published_recently(self):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=1)
 
@@ -32,9 +33,9 @@ class Question(models.Model):
 
 class Choice(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    choice_text = models.CharField(max_length=200, validators=[
-        RegexValidator(), ])
+    choice_text = models.CharField(max_length=200, blank=False)
     votes = models.IntegerField(default=0)
+
 
     def __str__(self):
         return self.choice_text
